@@ -16,6 +16,8 @@ class CrimeReportsController < ApplicationController
   # GET /crime_reports/new
   def new
     @crime_report = CrimeReport.new
+    geo_query = Geokit::Geocoders::GoogleGeocoder.geocode '140 Market St, San Francisco, CA'
+    @geo_coordinates = geo_query.ll
     @result = JSON.parse(open("http://gis.phila.gov/ArcGIS/rest/services/PhilaGov/Police_Incidents/MapServer/0/query?text=&geometry=&geometryType=esriGeometryPoint&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&objectIds=&where=SECTOR%3D%273%27+AND+UCR_GENERAL%3D%27500%27&time=&returnCountOnly=false&returnIdsOnly=false&returnGeometry=true&maxAllowableOffset=&outSR=&outFields=*&f=pjson").read)
 
   end
