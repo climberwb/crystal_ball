@@ -1,0 +1,23 @@
+<h1>Listing crime_reports</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @crime_reports.each do |crime_report| %>
+      <tr>
+        <td><%= link_to 'Show', crime_report %></td>
+        <td><%= link_to 'Edit', edit_crime_report_path(crime_report) %></td>
+        <td><%= link_to 'Destroy', crime_report, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Crime report', new_crime_report_path %>
