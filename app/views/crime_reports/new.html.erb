@@ -1,17 +1,8 @@
 <h1>New crime_report</h1>
 
-<span>test coordinates: </span><%= @geo_show %>
 </br>
-</br>
-<%= @coordsa%>
-<% @result.each do |result| %>
+<%= @lat %>, <%= @long %>
 
-<p><%  if result[0] = "features"%>
-     <%= result%>
-</p>
-<%end%>
-<%end%>
-<%= @result[0]%>
 <%= render 'form' %>
 
 <%= link_to 'Back', crime_reports_path %>

@@ -1,7 +1,25 @@
 class CrimeReport < ActiveRecord::Base
-  def self.check_crime(latitude, longitude)
-    if crime_x.between?(latitude - 0.002, latitude + 0.002) && crime_y.between?(longitude - 0.002, longitude +0.002)
-      # flash warning msg
-    end
-  end
+
+  def self.check_crime(latitude, longitude, result)
+    crime_events = []
+    result.values_at("features").first.each do |obj|
+      crime_x = obj.values_at("geometry").first.values_at("x").first.to_f.round(4)
+      crime_y = obj.values_at("geometry").first.values_at("y").first.to_f.round(4)
+      puts crime_x
+      puts crime_y
+
+      if crime_y.between?((latitude - 0.007), (latitude + 0.007)) && crime_x.between?((longitude - 0.007), (longitude + 0.007))
+        puts "warning!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+         crime_events << obj
+         puts crime_events
+          puts "lat #{latitude} = #{crime_y}"
+        puts "long #{longitude} = #{crime_x}"
+        # puts crime_events
+      else
+
+        puts "poop"
+      end
+    end
+  end
+
 end

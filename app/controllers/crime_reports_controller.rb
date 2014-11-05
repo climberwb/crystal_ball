@@ -11,20 +11,33 @@ class CrimeReportsController < ApplicationController
   # GET /crime_reports/1
   # GET /crime_reports/1.json
   def show
+    # 39.977102, -75.23310599999999
   end
+
+
 
   # GET /crime_reports/new
   def new
+    # latitude = -75.1858
+    # longitude = 39.9158
+
+
     @crime_report = CrimeReport.new
-    geo_query = Geokit::Geocoders::GoogleGeocoder.geocode '1701 JFK Blvd., Philadelphia, PA' #need to be able to pull in address
-    latitude = geo_query.ll.split(',')[0].to_f
-    longitude = geo_query.ll.split(',')[1].to_f
-    # CrimeReport.check_crime(latitude, longitude)
+     geo_query = Geokit::Geocoders::GoogleGeocoder.geocode '2200 OREGON AVE, Philadelphia, PA' #need to be able to pull in address
+    latitude = geo_query.ll.split(',')[0].to_f.round(4)
+    longitude = geo_query.ll.split(',')[1].to_f.round(4)
+    @lat = geo_query.ll.split(',')[0].to_f.round(4)
+    @long = geo_query.ll.split(',')[1].to_f.round(4)
     base = "http://gis.phila.gov/ArcGIS/rest/services/PhilaGov/Police_Incidents/MapServer/0/query"
     uri = URI.parse "#{base}?where=DISPATCH_DATE%3D+%272014-10-30%27&text=&objectIds=&time=&geometry=&geometryType=esriGeometryPoint&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=pjson"
     response = open(uri).read
-    @result = JSON.parse(response)
+    result = JSON.parse(response)
+    CrimeReport.check_crime(latitude, longitude, result)
   end
+
+
+
+
   # GET /crime_reports/1/edit
   def edit
   end
