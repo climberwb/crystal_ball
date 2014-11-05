@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   resources :crime_reports
   root to: 'crime_reports#new'
+  # get 'stub_json#crime_committed'
+  get '/stub_json/crime_committed'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
