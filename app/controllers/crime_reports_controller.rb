@@ -16,25 +16,14 @@ class CrimeReportsController < ApplicationController
   # GET /crime_reports/new
   def new
     @crime_report = CrimeReport.new
-    geo_query = Geokit::Geocoders::GoogleGeocoder.geocode '1701 JFK Blvd., Philadelphia, PA'
-    @geo_show = Geokit::Geocoders::GoogleGeocoder.geocode '1701 JFK Blvd., Philadelphia, PA'
+    geo_query = Geokit::Geocoders::GoogleGeocoder.geocode '1701 JFK Blvd., Philadelphia, PA' #need to be able to pull in address
     latitude = geo_query.ll.split(',')[0].to_f
     longitude = geo_query.ll.split(',')[1].to_f
-    coords = CrimeReport.create_fence(latitude, longitude)
+    # CrimeReport.check_crime(latitude, longitude)
     base = "http://gis.phila.gov/ArcGIS/rest/services/PhilaGov/Police_Incidents/MapServer/0/query"
-   # base = "file:///Users/wkushn001c/Desktop/crime_committed.html.erb"
-    params = URI.encode_www_form({
-      geometry: coords,
-      inSR: "yes",
-      f: "pjson"
-    })
-
-    uri = URI.parse "#{base}?#{params}" #"http://gis.phila.gov/ArcGIS/rest/services/PhilaGov/Police_Incidents/MapServer/0/query?geometry={\"rings\":[#{coords}],\"spatialReference\":{\"wkid\":4326}}&geometryType=esriGeometryPolygon&spatialRel=esriSpatialRelContains&outFields=*&inSR=4326&outSR=4326&f=pjson&pretty=true"
+    uri = URI.parse "#{base}?where=DISPATCH_DATE%3D+%272014-10-30%27&text=&objectIds=&time=&geometry=&geometryType=esriGeometryPoint&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=pjson"
     response = open(uri).read
     @result = JSON.parse(response)
-
-    # @geo_coordinates = geo_query.ll.split(',')
-    # @result = JSON.parse(open("http://crime.chicagotribune.com/api/1.0-beta1/crimeclassification/?format=json&limit=50").read)
   end
   # GET /crime_reports/1/edit
   def edit
