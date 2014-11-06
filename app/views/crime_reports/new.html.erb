@@ -1,8 +1,8 @@
 <h1>New crime_report</h1>
-
-</br>
-<%= @lat %>, <%= @long %>
-
-<%= render 'form' %>
-
-<%= link_to 'Back', crime_reports_path %>
+<%= form_for @crime_report do |f| %>
+<div class = "form-group">
+<%= f.label :address %>:
+<%= f.text_field :address, placeholder: "#### Street name", class: 'form-control address-label' %><br />
+</div>
+<%= f.submit "Check for Crime", class: 'btn btn-success' %>
+<% end %>

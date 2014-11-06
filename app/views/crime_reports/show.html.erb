@@ -1,4 +1,10 @@
 <p id="notice"><%= notice %></p>
+<h1>New crime_report</h1>
+</br>
+<%= @address.address %>, Philadelphia PA
+<br>
+Geo Co-ords: <%= @lat %>, <%= @long %>
 
-<%= link_to 'Edit', edit_crime_report_path(@crime_report) %> |
-<%= link_to 'Back', crime_reports_path %>
+<%= render 'form' %>
+<br>
+<%= link_to 'Back', root_path %>

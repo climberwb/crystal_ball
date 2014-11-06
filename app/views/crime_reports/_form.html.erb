@@ -1,7 +1,7 @@
 <%= form_for(@crime_report) do |f| %>
-  <% if @crime = nil %>
-    <div id="error_explanation">
-      <h2>0 Crimes in area. Check Completed</h2>
+  <% if @crimes.length == 0 %>
+    <div class="info-success" style="color: green; border: 5px solid green; width: 450px;">
+      <h2>No crimes in area. Check Completed</h2>
 
       <ul>
       <% @crime_report.errors.full_messages.each do |message| %>
@@ -30,8 +30,4 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
 <% end %>
