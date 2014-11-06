@@ -8,18 +8,20 @@ class CrimeReport < ActiveRecord::Base
       puts crime_x
       puts crime_y
 
-      if crime_y.between?((latitude - 0.007), (latitude + 0.007)) && crime_x.between?((longitude - 0.007), (longitude + 0.007))
+      if crime_y.between?((latitude - 0.004), (latitude + 0.004)) && crime_x.between?((longitude - 0.004), (longitude + 0.004))
         puts "warning!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
          crime_events << obj
-         puts crime_events
+        puts crime_events
           puts "lat #{latitude} = #{crime_y}"
-        puts "long #{longitude} = #{crime_x}"
-        # puts crime_events
+          puts "long #{longitude} = #{crime_x}"
+        puts crime_events
       else
 
         puts "poop"
       end
     end
+    crime_events
+
   end
 
 end

@@ -23,7 +23,7 @@ class CrimeReportsController < ApplicationController
 
 
     @crime_report = CrimeReport.new
-     geo_query = Geokit::Geocoders::GoogleGeocoder.geocode '2200 OREGON AVE, Philadelphia, PA' #need to be able to pull in address
+     geo_query = Geokit::Geocoders::GoogleGeocoder.geocode '1701 JFK BLVD., Philadelphia, PA' #need to be able to pull in address
     latitude = geo_query.ll.split(',')[0].to_f.round(4)
     longitude = geo_query.ll.split(',')[1].to_f.round(4)
     @lat = geo_query.ll.split(',')[0].to_f.round(4)
@@ -32,7 +32,7 @@ class CrimeReportsController < ApplicationController
     uri = URI.parse "#{base}?where=DISPATCH_DATE%3D+%272014-10-30%27&text=&objectIds=&time=&geometry=&geometryType=esriGeometryPoint&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=pjson"
     response = open(uri).read
     result = JSON.parse(response)
-    CrimeReport.check_crime(latitude, longitude, result)
+    @crimes = CrimeReport.check_crime(latitude, longitude, result)
   end
 
 

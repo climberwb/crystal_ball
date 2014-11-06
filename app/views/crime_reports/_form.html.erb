@@ -1,7 +1,27 @@
 <%= form_for(@crime_report) do |f| %>
-  <% if @crime_report.errors.any? %>
+  <% if @crime = nil %>
     <div id="error_explanation">
-      <h2><%= pluralize(@crime_report.errors.count, "error") %> prohibited this crime_report from being saved:</h2>
+      <h2>0 Crimes in area. Check Completed</h2>
+
+      <ul>
+      <% @crime_report.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% else %>
+    <div id="error_explanation">
+      <h2>There have been crimes in your area. We recommend locking and arming your system today.</h2>
+
+<% @crimes.each do |crime| %>
+  <%= crime.values_at("attributes").first.values_at("TEXT_GENERAL_CODE").first %>
+  committed at:
+  <%= crime.values_at("attributes").first.values_at("DISPATCH_TIME").first %>
+  In the
+  <%= crime.values_at("attributes").first.values_at("LOCATION_BLOCK").first %>
+  <br>
+  <br>
+<% end %>
 
       <ul>
       <% @crime_report.errors.full_messages.each do |message| %>
