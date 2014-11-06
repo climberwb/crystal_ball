@@ -12,7 +12,7 @@
   <% else %>
     <div id="error_explanation">
       <h2>There have been crimes in your area. We recommend locking and arming your system today.</h2>
-
+          <span style = "display:none"> <%= @crimes %></span>
 <% @crimes.each do |crime| %>
   <%= crime.values_at("attributes").first.values_at("TEXT_GENERAL_CODE").first %>
   committed at:
