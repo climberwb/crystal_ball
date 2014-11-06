@@ -39,3 +39,6 @@ gem 'geokit'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+# Use rails 12 factor to precompile assets for heroku deployment
+gem 'rails_12factor', group: :production
+
