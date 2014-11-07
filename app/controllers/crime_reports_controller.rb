@@ -1,7 +1,12 @@
+require 'twilio-ruby'
+
 class CrimeReportsController < ApplicationController
   before_action :set_crime_report, only: [:show, :edit, :update, :destroy]
   require 'open-uri'
   require 'json'
+
+
+
 
   # GET /crime_reports
   # GET /crime_reports.json
@@ -12,6 +17,7 @@ class CrimeReportsController < ApplicationController
   # GET /crime_reports/1
   # GET /crime_reports/1.json
   def show
+
     @address = CrimeReport.find(params[:id])
     geo_query = Geokit::Geocoders::GoogleGeocoder.geocode "#{@address.address}, Philadelphia, PA" #need to be able to pull in address
     latitude = geo_query.ll.split(',')[0].to_f.round(4)
@@ -23,6 +29,29 @@ class CrimeReportsController < ApplicationController
     response = open(uri).read
     result = JSON.parse(response)
     @crimes = CrimeReport.check_crime(latitude, longitude, result)
+
+    @body = ""
+    @crimes.each do |crime|
+      @body = @body + "#{crime.values_at('attributes').first.values_at('TEXT_GENERAL_CODE').first}
+              #{crime.values_at('attributes').first.values_at('DISPATCH_TIME').first}
+              #{crime.values_at('attributes').first.values_at('LOCATION_BLOCK').first}"
+         # "#{crime.values_at('attributes').first.values_at('TEXT_GENERAL_CODE').first}
+
+         #  #{crime.values_at('attributes').first.values_at('DISPATCH_TIME').first}
+
+         #  #{crime.values_at('attributes').first.values_at('LOCATION_BLOCK').first}  "
+    end
+    puts @body
+     # put your own credentials here
+
+    #set up a client to talk to the Twilio REST API
+   @client = Twilio::REST::Client.new account_sid, auth_token
+
+   @client.messages.create(
+  from: '+12672457083',
+  to: "+1#{@address.phonenumber}",
+  body: "#{@body}",
+)
   end
 
   # GET /crime_reports/new
@@ -33,7 +62,7 @@ class CrimeReportsController < ApplicationController
   # POST /crime_reports
   # POST /crime_reports.json
   def create
-    @crime_report = CrimeReport.create(:address => params[:crime_report][:address])
+    @crime_report = CrimeReport.create(:address => params[:crime_report][:address], :phonenumber  => params[:crime_report][:phonenumber])
 
     if @crime_report.save
       redirect_to @crime_report
