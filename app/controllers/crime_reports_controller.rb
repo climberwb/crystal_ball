@@ -25,7 +25,7 @@ class CrimeReportsController < ApplicationController
     @lat = geo_query.ll.split(',')[0].to_f.round(4)
     @long = geo_query.ll.split(',')[1].to_f.round(4)
     base = "http://gis.phila.gov/ArcGIS/rest/services/PhilaGov/Police_Incidents/MapServer/0/query"
-    uri = URI.parse "#{base}?where=DISPATCH_DATE%3D+%272014-10-30%27&text=&objectIds=&time=&geometry=&geometryType=esriGeometryPoint&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=pjson"
+    uri = URI.parse "#{base}?where=+DISPATCH_DATE%3D'2014-11-08'&text=&objectIds=&time=&geometry=&geometryType=esriGeometryPoint&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=pjson"
     response = open(uri).read
     result = JSON.parse(response)
     @crimes = CrimeReport.check_crime(latitude, longitude, result)
@@ -33,25 +33,27 @@ class CrimeReportsController < ApplicationController
     @body = ""
     @crimes.each do |crime|
       @body = @body + "#{crime.values_at('attributes').first.values_at('TEXT_GENERAL_CODE').first}
-              #{crime.values_at('attributes').first.values_at('DISPATCH_TIME').first}
-              #{crime.values_at('attributes').first.values_at('LOCATION_BLOCK').first}"
+                       #{crime.values_at('attributes').first.values_at('DISPATCH_TIME').first}
+                       #{crime.values_at('attributes').first.values_at('LOCATION_BLOCK').first}         "
          # "#{crime.values_at('attributes').first.values_at('TEXT_GENERAL_CODE').first}
 
          #  #{crime.values_at('attributes').first.values_at('DISPATCH_TIME').first}
 
          #  #{crime.values_at('attributes').first.values_at('LOCATION_BLOCK').first}  "
     end
-    puts @body
-     # put your own credentials here
+    # puts @body
+    # put your own credentials here
+ 
+         # set up a client to talk to the Twilio REST API
+    if @body != ""
+        @client = Twilio::REST::Client.new( account_sid,auth_token)
 
-    #set up a client to talk to the Twilio REST API
-   @client = Twilio::REST::Client.new account_sid, auth_token
-
-   @client.messages.create(
-  from: '+12672457083',
-  to: "+1#{@address.phonenumber}",
-  body: "#{@body}",
-)
+           @client.messages.create(
+              from: '+12672457083',
+              to: "+1#{@address.phonenumber}",
+              body: "#{@body}",
+        )
+    end
   end
 
   # GET /crime_reports/new
