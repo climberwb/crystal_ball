@@ -46,7 +46,7 @@ class CrimeReportsController < ApplicationController
 
          # set up a client to talk to the Twilio REST API
     if @body != ""
-        @client = Twilio::REST::Client.new( account_sid,auth_token)
+        @client = Twilio::REST::Client.new( TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN )
 
            @client.messages.create(
               from: '+12672457083',
