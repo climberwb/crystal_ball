@@ -2,38 +2,42 @@
   <% if @crimes.length == 0 %>
     <div class="info-success" style="color: green; border: 5px solid green; width: 450px;">
       <h2>No crimes in area. Check Completed</h2>
-
       <ul>
-      <% @crime_report.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% @crime_report.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% else %>
     <div id="error_explanation">
       <h2>There have been crimes in your area. We recommend locking and arming your system today.</h2>
 
-<% @crimes.each do |crime| %>
-  <%= crime.values_at("attributes").first.values_at("TEXT_GENERAL_CODE").first %>
-  committed at:
-  <%= crime.values_at("attributes").first.values_at("DISPATCH_TIME").first %>
-  In the
-  <%= crime.values_at("attributes").first.values_at("LOCATION_BLOCK").first %>
-  <br>
-  <br>
-<% end %>
+        <% @crimes.each do |crime| %>
+          <%= crime.values_at("attributes").first.values_at("TEXT_GENERAL_CODE").first %>
+          committed at:
+          <%= crime.values_at("attributes").first.values_at("DISPATCH_TIME").first %>
+          In the
+          <%= crime.values_at("attributes").first.values_at("LOCATION_BLOCK").first %>
+          <br>
+          <br>
+        <% end %>
 
       <ul>
-      <% @crime_report.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-     </ul>
+        <% @crime_report.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
     </div>
   <% end %>
-   <script> var crimes = {
-    center: {
-        "x": <%= @lat %>,
-        "y": <%= @long %>
-    },
-    points: [
-        {<%=raw @crimes %>}]} </script>
+  <script>
+    var crimes = {
+      center: {
+          "x": <%= @lat %>,
+          "y": <%= @long %>
+      },
+      points: [
+        {<%=raw @crimes %>}
+      ]
+    }
+  </script>
 <% end %>
