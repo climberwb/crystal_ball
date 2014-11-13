@@ -34,7 +34,7 @@ class CrimeReportsController < ApplicationController
     @crimes.each do |crime|
       @body = @body + "#{crime.values_at('attributes').first.values_at('TEXT_GENERAL_CODE').first}
                        #{crime.values_at('attributes').first.values_at('DISPATCH_TIME').first}
-                       #{crime.values_at('attributes').first.values_at('LOCATION_BLOCK').first}         "
+                       #{crime.values_at('attributes').first.values_at('LOCATION_BLOCK').first}"
          # "#{crime.values_at('attributes').first.values_at('TEXT_GENERAL_CODE').first}
 
          #  #{crime.values_at('attributes').first.values_at('DISPATCH_TIME').first}
@@ -47,7 +47,7 @@ class CrimeReportsController < ApplicationController
  auth_token = '6dc06d57e237bee29128ec31cfd2cfe1'
        #  set up a client to talk to the Twilio REST API
     if @body != ""
-        @client = Twilio::REST::Client.new( account_sid,auth_token)
+        @client = Twilio::REST::Client.new(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
            @client.messages.create(
               from: '+12672457083',
