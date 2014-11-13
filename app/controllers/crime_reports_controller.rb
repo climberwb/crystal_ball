@@ -43,8 +43,9 @@ class CrimeReportsController < ApplicationController
     end
     # puts @body
     # put your own credentials here
-
-         # set up a client to talk to the Twilio REST API
+ account_sid = 'AC6da86cd4fa99cef214fdf1eeb9dd3fae'
+ auth_token = '6dc06d57e237bee29128ec31cfd2cfe1'
+       #  set up a client to talk to the Twilio REST API
     if @body != ""
         @client = Twilio::REST::Client.new( account_sid,auth_token)
 

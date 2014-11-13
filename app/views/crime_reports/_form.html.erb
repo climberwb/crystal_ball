@@ -30,5 +30,11 @@
       </ul>
     </div>
   <% end %>
-   <div> <%= @crimes %></div>
+   <script> var crimes = {
+    center: {
+        "x": <%= @lat %>,
+        "y": <%= @long %>
+    },
+    points: [
+        {<%=raw @crimes %>}]} </script>
 <% end %>
