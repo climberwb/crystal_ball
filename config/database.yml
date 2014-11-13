@@ -1,5 +1,5 @@
 development:
-  adapter: sqlite3
+  adapter: postgresql
   database: crystal_ball_development
   pool: 5
   timeout: 5000
