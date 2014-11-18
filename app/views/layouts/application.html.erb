@@ -1,13 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CrystalBall</title>
+  <title>CrystalBal</title>
+  <script type="text/javascript" src='/assets/Index.js'></script>
+ <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBw6CG5Msl6Pce7mSKItcjwuPjThByVZao">
+    </script>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+  <script>
+    var crimes = {
+      center: {
+          "x": <%= @long %>,
+          "y": <%= @lat %>
+      },
+      points:
+           <%= raw @crimes_serialize %>
+
+    }
+
+
+
+
+     var map = new crimemap(crimes);
+
+        google.maps.event.addDomListener(window, 'load', map.initialize);
+  </script>
+   <style type="text/css">
+        #map-canvas {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            width: 600px;
+            height:500px;
+
+            border: 1px solid #000;
+        }
+    </style>
+
+
 </head>
 <body>
-
 <%= yield %>
 
 </body>

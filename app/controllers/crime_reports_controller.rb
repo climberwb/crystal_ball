@@ -24,17 +24,21 @@ class CrimeReportsController < ApplicationController
     longitude = geo_query.ll.split(',')[1].to_f.round(4)
     @lat = geo_query.ll.split(',')[0].to_f.round(4)
     @long = geo_query.ll.split(',')[1].to_f.round(4)
+    # base = "http://crimeapitest.azurewebsites.net/api/crime"
+    # uri = URI.parse "#{base}?date=11-14-2014&returnCount=1000&useComcastAddress=false"
     base = "http://gis.phila.gov/ArcGIS/rest/services/PhilaGov/Police_Incidents/MapServer/0/query"
-    uri = URI.parse "#{base}?where=+DISPATCH_DATE%3D'2014-11-08'&text=&objectIds=&time=&geometry=&geometryType=esriGeometryPoint&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=pjson"
+    uri = URI.parse "#{base}?where=+DISPATCH_DATE%3D'2014-11-14'&text=&objectIds=&time=&geometry=&geometryType=esriGeometryPoint&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=pjson"
     response = open(uri).read
     result = JSON.parse(response)
     @crimes = CrimeReport.check_crime(latitude, longitude, result)
-
+    @crimes_serialize = @crimes.to_json
     @body = ""
     @crimes.each do |crime|
+      if @body.length < 800
       @body = @body + "#{crime.values_at('attributes').first.values_at('TEXT_GENERAL_CODE').first}
                        #{crime.values_at('attributes').first.values_at('DISPATCH_TIME').first}
                        #{crime.values_at('attributes').first.values_at('LOCATION_BLOCK').first}"
+      end
          # "#{crime.values_at('attributes').first.values_at('TEXT_GENERAL_CODE').first}
 
          #  #{crime.values_at('attributes').first.values_at('DISPATCH_TIME').first}
@@ -43,11 +47,9 @@ class CrimeReportsController < ApplicationController
     end
     # puts @body
     # put your own credentials here
- account_sid = 'AC6da86cd4fa99cef214fdf1eeb9dd3fae'
- auth_token = '6dc06d57e237bee29128ec31cfd2cfe1'
        #  set up a client to talk to the Twilio REST API
     if @body != ""
-        @client = Twilio::REST::Client.new(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+        @client = Twilio::REST::Client.new(ENV["TWILIO_ACCOUNT_SID"], ENV["TWILIO_AUTH_TOKEN"])
 
            @client.messages.create(
               from: '+12672457083',

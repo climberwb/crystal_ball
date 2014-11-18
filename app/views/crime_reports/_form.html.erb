@@ -29,15 +29,6 @@
       </ul>
     </div>
   <% end %>
-  <script>
-    var crimes = {
-      center: {
-          "x": <%= @lat %>,
-          "y": <%= @long %>
-      },
-      points: [
-        {<%=raw @crimes %>}
-      ]
-    }
-  </script>
+  <div id="map-canvas"></div>
+
 <% end %>
