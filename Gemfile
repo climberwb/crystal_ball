@@ -51,4 +51,5 @@ gem 'twilio-ruby', '~> 3.12'
 
 # Use rails 12 factor to precompile assets for heroku deployment
 gem 'rails_12factor'
-
+#added this
+gem 'bootstrap-sass', '~> 3.1.1'

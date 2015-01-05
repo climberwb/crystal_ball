@@ -1,10 +1,16 @@
 <p id="notice"><%= notice %></p>
+<div id="crime-container" class="row">
+<div class="col-md-offset-4">
 <h1>New crime report</h1>
 </br>
+
+
 <%= @address.address %>, Philadelphia PA
 <br>
 Geo Co-ords: <%= @lat %>, <%= @long %>
 
 <%= render 'form' %>
+</div>
+</div>
 <br>
 <%= link_to 'Back', root_path %>
